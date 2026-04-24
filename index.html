@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>home barista era</title>
+  <style>
+    /* ─── CSS Custom Properties ─────────────────────────────────── */
+    :root {
+      --green-deep:    #3a6147;
+      --green-primary: #4a7c59;
+      --green-mid:     #6a9e78;
+      --green-accent:  #8db87f;
+      --green-soft:    #c3d9b8;
+      --green-pale:    #e8f0e3;
+      --bg:            #f7f5f0;
+      --surface:       #ffffff;
+      --surface-warm:  #fdfbf7;
+      --text-primary:  #2c2c2c;
+      --text-secondary:#6b6b6b;
+      --text-light:    #9a9a9a;
+      --border:        #e8e3dc;
+      --border-green:  #c3d9b8;
+      --shadow-sm:     0 1px 4px rgba(74,124,89,0.08);
+      --shadow-md:     0 4px 20px rgba(74,124,89,0.12);
+      --shadow-lg:     0 12px 48px rgba(74,124,89,0.18);
+      --radius-sm:     8px;
+      --radius-md:     14px;
+      --radius-lg:     20px;
+      --radius-xl:     28px;
+      --font-serif:    'Georgia', 'Times New Roman', serif;
+      --font-sans:     -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      --transition:    all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ─── Reset & Base ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ─── Header ────────────────────────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-primary) 60%, var(--green-mid) 100%);
+      color: white;
+      padding: 48px 24px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+      pointer-events: none;
+    }
+
+    .header-inner { position: relative; max-width: 700px; margin: 0 auto; }
+
+    .header-leaf {
+      font-size: 2.8rem;
+      display: block;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    }
+
+    header h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: normal;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    header p {
+      font-size: 1rem;
+      opacity: 0.85;
+      font-style: italic;
+      letter-spacing: 0.3px;
+    }
+
+    /* ─── Filter Bar ────────────────────────────────────────────── */
+    .filter-section {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .filter-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      gap: 8px;
+      padding: 14px 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      align-items: center;
+    }
+    .filter-inner::-webkit-scrollbar { display: none; }
+
+    .filter-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      white-space: nowrap;
+      margin-right: 4px;
+    }
+
+    .filter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+      font-family: var(--font-sans);
+    }
+
+    .filter-btn:hover {
+      border-color: var(--green-accent);
+      color: var(--green-primary);
+      background: var(--green-pale);
+    }
+
+    .filter-btn.active {
+      background: var(--green-primary);
+      border-color: var(--green-primary);
+      color: white;
+    }
+
+    /* ─── Main Grid ─────────────────────────────────────────────── */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .grid-header {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .grid-header h2 {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: normal;
+      color: var(--text-primary);
+    }
+
+    .recipe-count {
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    /* ─── Recipe Card ───────────────────────────────────────────── */
+    .recipe-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .recipe-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-green);
+    }
+
+    .card-color-bar {
+      height: 4px;
+      width: 100%;
+    }
+
+    .card-body {
+      padding: 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .tag-syrup  { background: #fef3e2; color: #a0620a; }
+    .tag-latte  { background: var(--green-pale); color: var(--green-deep); }
+    .tag-drink  { background: #f0eaff; color: #6b46c1; }
+
+    .card-title {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: normal;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      flex: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .card-meta {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-meta span { display: flex; align-items: center; gap: 4px; }
+
+    .card-btn {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--green-primary);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition);
+    }
+
+    .recipe-card:hover .card-btn {
+      gap: 8px;
+    }
+
+    /* ─── Modal Overlay ─────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 40, 34, 0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 1000;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 24px 16px;
+      overflow-y: auto;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: var(--surface);
+      border-radius: var(--radius-xl);
+      max-width: 680px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      transform: translateY(20px) scale(0.98);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+      opacity: 0;
+      margin: auto;
+    }
+
+    .modal-overlay.open .modal {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    /* ─── Modal Header ──────────────────────────────────────────── */
+    .modal-header {
+      background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-primary) 100%);
+      color: white;
+      padding: 32px 32px 28px;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.15);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: var(--transition);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-close:hover { background: rgba(255,255,255,0.28); }
+
+    .modal-tags { display: flex; gap: 6px; margin-bottom: 12px; }
+
+    .modal-tag {
+      display: inline-block;
+      padding: 3px 11px;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      background: rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.92);
+    }
+
+    .modal-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: normal;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .modal-desc {
+      font-size: 0.9rem;
+      opacity: 0.88;
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    /* ─── Modal Body ────────────────────────────────────────────── */
+    .modal-body { padding: 32px; }
+
+    /* ─── Servings Control ──────────────────────────────────────── */
+    .servings-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--surface-warm);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      margin-bottom: 28px;
+    }
+
+    .servings-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      flex: 1;
+    }
+
+    .servings-controls {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .servings-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border-green);
+      background: var(--surface);
+      color: var(--green-primary);
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      line-height: 1;
+    }
+
+    .servings-btn:hover:not(:disabled) {
+      background: var(--green-primary);
+      border-color: var(--green-primary);
+      color: white;
+    }
+
+    .servings-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .servings-count {
+      min-width: 36px;
+      text-align: center;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--green-deep);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .reset-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: var(--font-sans);
+    }
+
+    .reset-btn:hover {
+      border-color: #d97706;
+      color: #d97706;
+      background: #fef3e2;
+    }
+
+    /* ─── Ingredients Section ───────────────────────────────────── */
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      font-weight: normal;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .ingredients-list {
+      list-style: none;
+      margin-bottom: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .ingredient-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      transition: background 0.15s ease;
+    }
+
+    .ingredient-item:hover { background: var(--surface-warm); }
+
+    .ingredient-item:nth-child(even) { background: var(--bg); }
+    .ingredient-item:nth-child(even):hover { background: var(--green-pale); }
+
+    .ingredient-bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green-accent);
+      flex-shrink: 0;
+    }
+
+    .ingredient-qty-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      min-width: 100px;
+    }
+
+    .ingredient-qty {
+      width: 70px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1.5px solid transparent;
+      background: transparent;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--green-deep);
+      text-align: right;
+      font-family: var(--font-sans);
+      transition: var(--transition);
+      cursor: text;
+    }
+
+    .ingredient-qty:hover {
+      border-color: var(--border-green);
+      background: var(--surface);
+    }
+
+    .ingredient-qty:focus {
+      outline: none;
+      border-color: var(--green-primary);
+      background: var(--surface);
+      box-shadow: 0 0 0 3px rgba(74,124,89,0.12);
+    }
+
+    .ingredient-qty.customized {
+      border-color: var(--green-accent);
+      background: var(--green-pale);
+    }
+
+    .ingredient-unit {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      margin-left: 2px;
+      min-width: 70px;
+    }
+
+    .ingredient-name {
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      flex: 1;
+    }
+
+    .optional-badge {
+      font-size: 0.7rem;
+      color: var(--text-light);
+      font-style: italic;
+      white-space: nowrap;
+      border: 1px solid var(--border);
+      padding: 1px 7px;
+      border-radius: 100px;
+    }
+
+    /* ─── Steps Section ─────────────────────────────────────────── */
+    .steps-list {
+      list-style: none;
+      margin-bottom: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .step-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--green-primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-text {
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: var(--text-primary);
+      padding-top: 4px;
+    }
+
+    .step-text strong {
+      color: var(--green-deep);
+    }
+
+    /* ─── Notes Section ─────────────────────────────────────────── */
+    .notes-box {
+      background: var(--green-pale);
+      border: 1px solid var(--border-green);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      margin-bottom: 8px;
+    }
+
+    .notes-box p {
+      font-size: 0.88rem;
+      color: var(--green-deep);
+      line-height: 1.65;
+    }
+
+    .notes-box p::before {
+      content: '✦  ';
+      color: var(--green-accent);
+      font-size: 0.75rem;
+    }
+
+    /* ─── Empty State ───────────────────────────────────────────── */
+    .empty-state {
+      text-align: center;
+      padding: 80px 24px;
+      color: var(--text-light);
+    }
+
+    .empty-state .empty-icon { font-size: 3rem; margin-bottom: 16px; display: block; }
+    .empty-state p { font-size: 1rem; }
+
+    /* ─── Custom indicator ──────────────────────────────────────── */
+    .custom-indicator {
+      display: none;
+      font-size: 0.72rem;
+      color: var(--green-primary);
+      font-weight: 600;
+      padding: 2px 8px;
+      background: var(--green-pale);
+      border-radius: 100px;
+      border: 1px solid var(--border-green);
+      margin-left: auto;
+    }
+
+    .custom-indicator.visible { display: inline-block; }
+
+    /* ─── Responsive ────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      header { padding: 36px 20px 32px; }
+      main { padding: 28px 16px 60px; }
+      .modal-body { padding: 24px 20px; }
+      .modal-header { padding: 24px 24px 22px; }
+      .recipe-grid { grid-template-columns: 1fr; gap: 16px; }
+      .modal { border-radius: var(--radius-lg); }
+      .modal-overlay { padding: 16px 12px; }
+      .ingredient-qty { width: 60px; }
+      .ingredient-qty-wrap { min-width: 88px; }
+    }
+
+    /* ─── Scrollbar ─────────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--green-soft); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--green-accent); }
+
+    /* ─── Animations ────────────────────────────────────────────── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .recipe-card {
+      animation: fadeInUp 0.4s ease both;
+    }
+
+    .recipe-card:nth-child(1)  { animation-delay: 0.05s; }
+    .recipe-card:nth-child(2)  { animation-delay: 0.10s; }
+    .recipe-card:nth-child(3)  { animation-delay: 0.15s; }
+    .recipe-card:nth-child(4)  { animation-delay: 0.20s; }
+    .recipe-card:nth-child(5)  { animation-delay: 0.25s; }
+    .recipe-card:nth-child(6)  { animation-delay: 0.30s; }
+    .recipe-card:nth-child(7)  { animation-delay: 0.35s; }
+    .recipe-card:nth-child(8)  { animation-delay: 0.40s; }
+
+    /* no-animation for filtered cards */
+    .recipe-card.no-anim { animation: none; }
+  </style>
+</head>
+<body>
+
+<!-- ─── Header ─────────────────────────────────────────────────── -->
+<header>
+  <div class="header-inner">
+    <span class="header-leaf">🍵</span>
+    <h1>home barista era</h1>
+    <p>Syrups, lattes, and things worth making twice</p>
+  </div>
+</header>
+
+<!-- ─── Filter Bar ──────────────────────────────────────────────── -->
+<div class="filter-section">
+  <div class="filter-inner" id="filterBar">
+    <span class="filter-label">Filter</span>
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="syrup">🍯 Syrups</button>
+    <button class="filter-btn" data-filter="latte">🍵 Lattes</button>
+  </div>
+</div>
+
+<!-- ─── Main ────────────────────────────────────────────────────── -->
+<main>
+  <div class="grid-header">
+    <h2>Recipes</h2>
+    <span class="recipe-count" id="recipeCount"></span>
+  </div>
+  <div class="recipe-grid" id="recipeGrid"></div>
+</main>
+
+<!-- ─── Modal ───────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <button class="modal-close" id="modalClose" aria-label="Close recipe">✕</button>
+      <div class="modal-tags" id="modalTags"></div>
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <p class="modal-desc" id="modalDesc"></p>
+    </div>
+    <div class="modal-body">
+
+      <!-- Servings bar -->
+      <div class="servings-bar">
+        <span class="servings-label">Servings</span>
+        <span class="custom-indicator" id="customIndicator">Customized</span>
+        <div class="servings-controls">
+          <button class="servings-btn" id="btnMinus" aria-label="Decrease servings">−</button>
+          <span class="servings-count" id="servingsCount">1</span>
+          <button class="servings-btn" id="btnPlus" aria-label="Increase servings">+</button>
+        </div>
+        <button class="reset-btn" id="resetBtn" title="Reset to default quantities">↺ Reset</button>
+      </div>
+
+      <!-- Ingredients -->
+      <p class="section-title">Ingredients</p>
+      <ul class="ingredients-list" id="ingredientsList"></ul>
+
+      <!-- Steps -->
+      <p class="section-title">Instructions</p>
+      <ol class="steps-list" id="stepsList"></ol>
+
+      <!-- Notes -->
+      <div id="notesSection"></div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════════════════ */
+const RECIPES = [
+  {
+    id: 'fig-honey-syrup',
+    title: 'Fig & Honey Syrup',
+    description: 'A rich, floral syrup made with fig jam and honey — perfect for lattes, drizzling over yogurt, or sweetening sparkling water.',
+    tags: ['syrup'],
+    color: '#d97706',
+    servingsBase: 1,
+    ingredients: [
+      { qty: 0.5,  unit: 'cups',       name: 'fig jam',           optional: false },
+      { qty: 0.2,  unit: 'cups',       name: 'honey',             optional: false },
+      { qty: 0.5,  unit: 'cups',       name: 'water',             optional: false },
+      { qty: 1,    unit: 'tbsp',       name: 'fresh lemon juice', optional: false },
+      { qty: 1,    unit: 'pinch',      name: 'salt',              optional: false },
+    ],
+    steps: [
+      { bold: 'Combine ingredients:', text: 'Add fig jam, honey, and water to a small saucepan over medium heat. Whisk together until the jam begins to break down and everything is combined.' },
+      { bold: 'Simmer:', text: 'Bring to a gentle simmer, stirring occasionally. Cook until slightly thickened, about 8–10 minutes.' },
+      { bold: 'Finish & strain:', text: 'Remove from heat and stir in lemon juice and salt. Pour through a fine-mesh strainer into a jar or bottle, pressing on any solids. Discard solids.' },
+      { bold: 'Cool & store:', text: 'Let cool completely before sealing. Store in the fridge for up to 2 weeks.' },
+    ],
+    notes: 'Use in mocktails, hot or iced lattes, sparkling water, cheese boards, pancakes, or yogurt. Make it spiced: add a cinnamon stick or 2–3 cardamom pods while simmering. Simmer longer for thicker, add water for thinner. Sweetener swap: maple syrup works great here instead of honey — same amount, slightly different flavor.',
+  },
+  {
+    id: 'cherry-syrup',
+    title: 'Cherry Syrup',
+    description: 'A rich cherry syrup with warm vanilla and optional almond notes.',
+    tags: ['syrup'],
+    color: '#9b2335',
+    servingsBase: 1,
+    ingredients: [
+      { qty: 250, unit: 'ml',   name: 'water',           optional: false },
+      { qty: 250, unit: 'g',    name: 'frozen pitted cherries', optional: false },
+      { qty: 120, unit: 'g',    name: 'sugar',           optional: false },
+      { qty: 1,   unit: 'tsp',  name: 'vanilla extract', optional: false },
+      { qty: 0.5, unit: 'tsp',  name: 'almond extract',  optional: true  },
+      { qty: 0.25,unit: 'tsp',  name: 'cinnamon',        optional: false },
+      { qty: 1,   unit: 'pinch',name: 'vanilla salt',    optional: true  },
+    ],
+    steps: [
+      { text: 'Add water, cherries, and sugar to a pot.' },
+      { text: 'Heat until boiling, then reduce heat and simmer for 15 minutes until slightly thickened.' },
+      { text: 'Let cool for 30 minutes.' },
+      { text: 'Blend, then strain for a thicker syrup — or just strain if you want a clear syrup.' },
+      { text: 'Once cool, stir in vanilla extract and almond extract (if using) so they don\'t cook out.' },
+    ],
+    notes: 'Sweetener swap: use agave (100g) or honey (100g) instead of sugar — both dissolve well and let the cherry flavor shine.',
+  },
+  {
+    id: 'strawberry-syrup',
+    title: 'Strawberry Syrup',
+    description: 'Simple, bright strawberry syrup with vanilla.',
+    tags: ['syrup'],
+    color: '#e05c7a',
+    servingsBase: 1,
+    ingredients: [
+      { qty: 250, unit: 'ml',  name: 'water',              optional: false },
+      { qty: 250, unit: 'g',   name: 'frozen strawberries', optional: false },
+      { qty: 120, unit: 'g',   name: 'sugar',              optional: false },
+      { qty: 1,   unit: 'tsp', name: 'vanilla extract',    optional: false },
+    ],
+    steps: [
+      { text: 'Add water, strawberries, and sugar to a pot.' },
+      { text: 'Heat until boiling, then reduce heat and simmer for 15 minutes until slightly thickened.' },
+      { text: 'Let cool for 30 minutes.' },
+      { text: 'Blend, then strain for thicker syrup — or just strain for a clear syrup.' },
+      { text: 'Once cool, stir in vanilla extract so it doesn\'t cook out.' },
+    ],
+    notes: 'Sweetener swap: agave is great here — use 100g. It dissolves cold, so it\'s ideal if you want a no-cook version (just blend cold and strain).',
+  },
+  {
+    id: 'ginger-syrup',
+    title: 'Ginger Syrup',
+    description: 'A warming, spicy ginger syrup for lattes, mocktails, and sparkling water.',
+    tags: ['syrup'],
+    color: '#c2692a',
+    servingsBase: 1,
+    ingredients: [
+      { qty: 250, unit: 'ml',    name: 'water',         optional: false },
+      { qty: 75,  unit: 'g',     name: 'brown sugar',   optional: false },
+      { qty: 55,  unit: 'g',     name: 'regular sugar', optional: false },
+      { qty: 1.5, unit: 'inches',name: 'fresh ginger (sliced, adjust to taste)', optional: false },
+    ],
+    steps: [
+      { text: 'Add water, both sugars, and sliced ginger to a pot.' },
+      { text: 'Heat until boiling, then reduce heat and simmer for 15 minutes until slightly thickened.' },
+      { text: 'Let cool for 30 minutes.' },
+      { text: 'Strain out the ginger pieces.' },
+    ],
+    notes: 'Sweetener swap: maple syrup (100g total) is amazing here — it adds a warm, caramel-y depth that pairs really well with ginger. Honey works too.',
+  },
+  {
+    id: 'hibiscus-syrup',
+    title: 'Hibiscus Tea Syrup',
+    description: 'A tart, vibrant hibiscus syrup — beautiful in lattes, sparkling water, and mocktails.',
+    tags: ['syrup'],
+    color: '#a02b6e',
+    servingsBase: 1,
+    ingredients: [
+      { qty: 250, unit: 'ml',  name: 'water',           optional: false },
+      { qty: 2,   unit: 'tbsp',name: 'dried hibiscus flowers (or 2 tea bags)', optional: false },
+      { qty: 110, unit: 'g',   name: 'sugar',           optional: false },
+      { qty: 1,   unit: 'tbsp',name: 'fresh lemon juice',optional: false },
+      { qty: 1,   unit: 'pinch',name: 'salt',           optional: false },
+    ],
+    steps: [
+      { text: 'Bring water to a boil. Add hibiscus flowers or tea bags and steep for 10 minutes.' },
+      { text: 'Remove flowers/bags and add sugar. Stir until dissolved.' },
+      { text: 'Simmer for 5 minutes until slightly thickened.' },
+      { text: 'Remove from heat, add lemon juice and salt.' },
+      { text: 'Let cool completely. Store in fridge for up to 2 weeks.' },
+    ],
+    notes: 'Deep ruby color. Pairs beautifully with sparkling water, lemonade, or matcha lattes. Sweetener swap: agave (90g) keeps the hibiscus flavor clean and bright — ideal choice here. Honey can overpower it.',
+  },
+  {
+    id: 'chai-syrup',
+    title: 'Chai Spice Syrup',
+    description: 'A warmly spiced chai syrup — perfect stirred into lattes, milk, or sparkling water. Use it to make a dirty chai matcha.',
+    tags: ['syrup'],
+    color: '#b5622a',
+    servingsBase: 1,
+    ingredients: [
+      { qty: 250,  unit: 'ml',      name: 'water',                    optional: false },
+      { qty: 150,  unit: 'g',       name: 'sugar',                    optional: false },
+      { qty: 3,    unit: 'sticks',  name: 'cinnamon',                 optional: false },
+      { qty: 8,    unit: 'pods',    name: 'cardamom (lightly crushed)',optional: false },
+      { qty: 6,    unit: 'whole',   name: 'cloves',                   optional: false },
+      { qty: 1,    unit: 'tsp',     name: 'black peppercorns',        optional: false },
+      { qty: 1,    unit: 'inch',    name: 'fresh ginger (sliced)',     optional: false },
+      { qty: 2,    unit: 'bags',    name: 'black tea bags',           optional: false },
+      { qty: 1,    unit: 'tsp',     name: 'vanilla extract',          optional: true  },
+    ],
+    steps: [
+      { text: 'Add water, sugar, cinnamon, cardamom, cloves, peppercorns, and ginger to a small saucepan.' },
+      { text: 'Heat over medium, stirring until sugar dissolves, then bring to a gentle simmer.' },
+      { text: 'Simmer for 10 minutes to let the spices bloom.' },
+      { text: 'Remove from heat, add tea bags, and steep for 5 minutes.' },
+      { text: 'Remove tea bags (don\'t squeeze — it gets bitter). Strain out all spices.' },
+      { text: 'Once cool, stir in vanilla extract if using. Store in fridge for up to 2 weeks.' },
+    ],
+    notes: 'To make a dirty chai matcha: whisk 1 tsp matcha with 2 tbsp hot water, pour over iced milk with 2–3 tbsp of this syrup. Adjust sweetness to taste. More ginger = spicier, more cardamom = floral. Sweetener swap: maple syrup (120g) is excellent here — it adds warmth that plays beautifully with the chai spices.',
+  },
+  {
+    id: 'dirty-chai-matcha',
+    title: 'Dirty Chai Matcha Latte',
+    description: 'Matcha meets chai spice — earthy, warming, and layered. Use the chai syrup to sweeten and spice.',
+    tags: ['latte'],
+    color: '#b5622a',
+    servingsBase: 1,
+    ingredients: [
+      { qty: 1,    unit: 'tsp',  name: 'ceremonial or premium matcha powder', optional: false },
+      { qty: 2,    unit: 'tbsp', name: 'hot water (~175°F / 80°C)',            optional: false },
+      { qty: 1,    unit: 'cup',  name: 'oat milk (or milk of choice)',         optional: false },
+      { qty: 2,    unit: 'tbsp', name: 'chai spice syrup (see Chai Syrup recipe)', optional: false },
+      { qty: null, unit: '',     name: 'ice',                                  optional: false },
+    ],
+    steps: [
+      { text: 'Sift matcha into a bowl or cup.' },
+      { text: 'Add hot water and whisk vigorously until smooth and frothy with no clumps.' },
+      { text: 'Add chai syrup to your glass and fill with ice.' },
+      { text: 'Pour milk over ice.' },
+      { text: 'Pour matcha shot over the top.' },
+    ],
+    notes: 'Adjust chai syrup to taste — start with 1.5 tbsp and go from there. Works beautifully hot too: warm the milk, skip the ice, pour matcha on top.',
+  },
+  {
+    id: 'white-mocha-syrup',
+    title: 'White Mocha Syrup',
+    description: 'A rich, sweet white chocolate syrup — the base for white mochas and a great add-in for lattes.',
+    tags: ['syrup'],
+    color: '#c89b6e',
+    servingsBase: 1,
+    ingredients: [
+      { qty: 120, unit: 'ml',   name: 'water',                       optional: false },
+      { qty: 120, unit: 'ml',   name: 'heavy cream',                 optional: false },
+      { qty: 170, unit: 'g',    name: 'white chocolate chips (good quality)', optional: false },
+      { qty: 70,  unit: 'g',    name: 'sugar',                       optional: false },
+      { qty: 1,   unit: 'tsp',  name: 'vanilla extract',             optional: false },
+      { qty: 1,   unit: 'pinch',name: 'salt',                        optional: false },
+    ],
+    steps: [
+      { text: 'Add water, heavy cream, and sugar to a small saucepan over medium-low heat.' },
+      { text: 'Stir until sugar dissolves, then bring to a very gentle simmer — do not boil.' },
+      { text: 'Add white chocolate chips and whisk constantly until fully melted and smooth.' },
+      { text: 'Remove from heat, stir in vanilla extract and salt.' },
+      { text: 'Let cool. It will thicken as it cools. Store in the fridge for up to 2 weeks.' },
+      { text: 'Reheat gently (or shake well) before using — it may separate slightly when cold.' },
+    ],
+    notes: 'Use 2–3 tbsp per drink. Great in lattes, matcha, or just stirred into warm milk. For a white matcha mocha: whisk matcha + hot water, pour over iced milk with white mocha syrup. Use good quality white chocolate — it makes a big difference. The white chocolate is already quite sweet, so you can reduce the added sugar further or skip it entirely if you prefer.',
+  },
+  {
+    id: 'banana-milk-matcha',
+    title: 'Banana Milk Matcha Latte',
+    description: 'Using H-Mart banana milk in a matcha latte. Creamy, subtly sweet, and delicious.',
+    tags: ['latte'],
+    color: '#4a7c59',
+    servingsBase: 1,
+    ingredients: [
+      { qty: 1,   unit: 'tsp', name: 'ceremonial or premium matcha powder', optional: false },
+      { qty: 2,   unit: 'tbsp',name: 'hot water (~175°F / 80°C)',           optional: false },
+      { qty: 1,   unit: 'cup', name: 'H-Mart banana milk (chilled)',        optional: false },
+      { qty: null, unit: '',   name: 'ice',                                 optional: false },
+    ],
+    steps: [
+      { text: 'Sift matcha powder into a bowl or cup.' },
+      { text: 'Add hot water and whisk vigorously (or use a milk frother) until smooth and frothy with no clumps.' },
+      { text: 'Fill a glass with ice.' },
+      { text: 'Pour banana milk over ice.' },
+      { text: 'Pour matcha shot over the milk.' },
+    ],
+    notes: 'The banana milk adds a natural sweetness — no extra syrup needed. Adjust matcha amount to taste.',
+  },
+  {
+    id: 'protein-matcha',
+    title: 'Vanilla Protein Matcha Latte',
+    description: 'Matcha meets protein — enjoy matcha while hitting your protein goals.',
+    tags: ['latte'],
+    color: '#6a9e78',
+    servingsBase: 1,
+    ingredients: [
+      { qty: 1, unit: 'tsp', name: 'ceremonial or premium matcha powder', optional: false },
+      { qty: 2, unit: 'tbsp',name: 'hot water (~175°F / 80°C)',           optional: false },
+      { qty: 1, unit: 'cup', name: 'vanilla protein milk (e.g. Fairlife)', optional: false },
+      { qty: null, unit: '', name: 'ice',                                  optional: false },
+    ],
+    steps: [
+      { text: 'Sift matcha powder into a bowl or cup.' },
+      { text: 'Add hot water and whisk vigorously until smooth and frothy.' },
+      { text: 'Fill a glass with ice.' },
+      { text: 'Pour vanilla protein milk over ice.' },
+      { text: 'Pour matcha shot over the milk.' },
+    ],
+    notes: 'Win-win — matcha + protein. Adjust matcha to taste. Works hot too (skip ice, warm the milk).',
+  },
+];
+
+/* ═══════════════════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════════════════ */
+
+/** Format a number nicely: fractions for common small amounts, else 2dp max. */
+function fmtQty(n) {
+  if (n === null || n === undefined) return '';
+  // Common fractions
+  const fracs = [
+    [1/8, '⅛'], [1/4, '¼'], [1/3, '⅓'], [3/8, '⅜'],
+    [1/2, '½'], [5/8, '⅝'], [2/3, '⅔'], [3/4, '¾'], [7/8, '⅞'],
+  ];
+  // For values < 2, try to match a fraction (within 2%)
+  if (n > 0 && n < 2) {
+    const whole = Math.floor(n);
+    const frac  = n - whole;
+    if (frac > 0.01) {
+      for (const [val, sym] of fracs) {
+        if (Math.abs(frac - val) < 0.02) {
+          return whole > 0 ? `${whole}${sym}` : sym;
+        }
+      }
+    } else if (whole > 0) {
+      return String(whole);
+    }
+  }
+  // General: round to 2dp, remove trailing zeros
+  const rounded = Math.round(n * 100) / 100;
+  return rounded % 1 === 0 ? String(rounded) : rounded.toFixed(2).replace(/\.?0+$/, '');
+}
+
+function lsKey(recipeId) { return `recipe_custom_${recipeId}`; }
+
+function loadCustom(recipeId) {
+  try { return JSON.parse(localStorage.getItem(lsKey(recipeId))) || {}; }
+  catch { return {}; }
+}
+
+function saveCustom(recipeId, data) {
+  localStorage.setItem(lsKey(recipeId), JSON.stringify(data));
+}
+
+function clearCustom(recipeId) {
+  localStorage.removeItem(lsKey(recipeId));
+}
+
+function hasCustom(recipeId) {
+  const d = loadCustom(recipeId);
+  return Object.keys(d).length > 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD RENDERING
+═══════════════════════════════════════════════════════════════ */
+const grid       = document.getElementById('recipeGrid');
+const countEl    = document.getElementById('recipeCount');
+const filterBtns = document.querySelectorAll('.filter-btn');
+
+let activeFilter = 'all';
+
+function tagClass(tag) {
+  if (tag === 'syrup') return 'tag-syrup';
+  if (tag === 'latte') return 'tag-latte';
+  return 'tag-drink';
+}
+
+function tagLabel(tag) {
+  if (tag === 'syrup') return '🍯 Syrup';
+  if (tag === 'latte') return '🍵 Latte';
+  return tag;
+}
+
+function renderCards(filter) {
+  const visible = RECIPES.filter(r => filter === 'all' || r.tags.includes(filter));
+  grid.innerHTML = '';
+  countEl.textContent = `${visible.length} recipe${visible.length !== 1 ? 's' : ''}`;
+
+  if (!visible.length) {
+    grid.innerHTML = `<div class="empty-state">
+      <span class="empty-icon">🍃</span>
+      <p>No recipes found for this filter.</p>
+    </div>`;
+    return;
+  }
+
+  visible.forEach((r, i) => {
+    const card = document.createElement('article');
+    card.className = 'recipe-card no-anim';
+    // Re-trigger animation on filter change
+    requestAnimationFrame(() => {
+      card.style.animationDelay = `${i * 0.06}s`;
+      card.classList.remove('no-anim');
+    });
+    card.tabIndex = 0;
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-label', `Open ${r.title}`);
+
+    const tagsHtml = r.tags.map(t =>
+      `<span class="tag ${tagClass(t)}">${tagLabel(t)}</span>`
+    ).join('');
+
+    const ingredCount = r.ingredients.length;
+
+    card.innerHTML = `
+      <div class="card-color-bar" style="background: linear-gradient(90deg, ${r.color}cc, ${r.color}55)"></div>
+      <div class="card-body">
+        <div class="card-tags">${tagsHtml}</div>
+        <h3 class="card-title">${r.title}</h3>
+        <p class="card-desc">${r.description}</p>
+        <div class="card-footer">
+          <div class="card-meta">
+            <span>📋 ${ingredCount} ingredients</span>
+            <span>📝 ${r.steps.length} steps</span>
+          </div>
+          <span class="card-btn">View recipe →</span>
+        </div>
+      </div>
+    `;
+
+    card.addEventListener('click', () => openModal(r.id));
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openModal(r.id); });
+    grid.appendChild(card);
+  });
+}
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    renderCards(activeFilter);
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   MODAL
+═══════════════════════════════════════════════════════════════ */
+const overlay      = document.getElementById('modalOverlay');
+const modal        = document.getElementById('modal');
+const closeBtn     = document.getElementById('modalClose');
+const titleEl      = document.getElementById('modalTitle');
+const descEl       = document.getElementById('modalDesc');
+const tagsEl       = document.getElementById('modalTags');
+const ingList      = document.getElementById('ingredientsList');
+const stepsList    = document.getElementById('stepsList');
+const notesSection = document.getElementById('notesSection');
+const servCount    = document.getElementById('servingsCount');
+const btnMinus     = document.getElementById('btnMinus');
+const btnPlus      = document.getElementById('btnPlus');
+const resetBtn     = document.getElementById('resetBtn');
+const customInd    = document.getElementById('customIndicator');
+
+let currentRecipe  = null;
+let currentServings = 1;
+
+function openModal(id) {
+  currentRecipe   = RECIPES.find(r => r.id === id);
+  currentServings = 1;
+  renderModal();
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  modal.scrollTop = 0;
+  setTimeout(() => closeBtn.focus(), 320);
+}
+
+function closeModal() {
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  currentRecipe = null;
+}
+
+function renderModal() {
+  if (!currentRecipe) return;
+  const r = currentRecipe;
+  const s = currentServings;
+
+  // Header
+  titleEl.textContent = r.title;
+  descEl.textContent  = r.description;
+  tagsEl.innerHTML    = r.tags.map(t => `<span class="modal-tag">${tagLabel(t)}</span>`).join('');
+
+  // Servings
+  servCount.textContent = s;
+  btnMinus.disabled = s <= 1;
+
+  // Custom data
+  const custom = loadCustom(r.id);
+  const isCustom = Object.keys(custom).length > 0;
+  customInd.classList.toggle('visible', isCustom);
+
+  // Ingredients
+  ingList.innerHTML = '';
+  r.ingredients.forEach((ing, idx) => {
+    const scaledQty = ing.qty !== null ? ing.qty * s : null;
+    const customKey = String(idx);
+    const displayQty = custom[customKey] !== undefined ? custom[customKey] : scaledQty;
+
+    const li = document.createElement('li');
+    li.className = 'ingredient-item';
+
+    const isCustomized = custom[customKey] !== undefined;
+
+    li.innerHTML = `
+      <span class="ingredient-bullet"></span>
+      <div class="ingredient-qty-wrap">
+        ${ing.qty !== null
+          ? `<input
+              class="ingredient-qty${isCustomized ? ' customized' : ''}"
+              type="text"
+              inputmode="decimal"
+              value="${fmtQty(displayQty)}"
+              data-index="${idx}"
+              data-base="${ing.qty}"
+              aria-label="Quantity for ${ing.name}"
+            />`
+          : `<span class="ingredient-qty" style="cursor:default; color: var(--text-light)"></span>`
+        }
+        <span class="ingredient-unit">${ing.unit}</span>
+      </div>
+      <span class="ingredient-name">${ing.name}</span>
+      ${ing.optional ? '<span class="optional-badge">optional</span>' : ''}
+    `;
+
+    if (ing.qty !== null) {
+      const input = li.querySelector('.ingredient-qty');
+      input.addEventListener('change', () => handleQtyEdit(input, idx));
+      input.addEventListener('blur',   () => handleQtyEdit(input, idx));
+    }
+
+    ingList.appendChild(li);
+  });
+
+  // Steps
+  stepsList.innerHTML = '';
+  r.steps.forEach((step, i) => {
+    const li = document.createElement('li');
+    li.className = 'step-item';
+    const textHtml = step.bold
+      ? `<strong>${step.bold}</strong> ${step.text}`
+      : step.text;
+    li.innerHTML = `
+      <span class="step-num">${i + 1}</span>
+      <p class="step-text">${textHtml}</p>
+    `;
+    stepsList.appendChild(li);
+  });
+
+  // Notes
+  notesSection.innerHTML = '';
+  if (r.notes) {
+    notesSection.innerHTML = `
+      <p class="section-title">Notes</p>
+      <div class="notes-box"><p>${r.notes}</p></div>
+    `;
+  }
+}
+
+function handleQtyEdit(input, idx) {
+  const raw = input.value.trim();
+  // Accept unicode fractions, decimals, or blank
+  const val = parseUnicodeNum(raw);
+  if (raw === '' || val === null) {
+    input.value = fmtQty(currentRecipe.ingredients[idx].qty * currentServings);
+    return;
+  }
+
+  const custom = loadCustom(currentRecipe.id);
+  custom[String(idx)] = val;
+  saveCustom(currentRecipe.id, custom);
+
+  input.classList.add('customized');
+  customInd.classList.add('visible');
+  input.value = fmtQty(val);
+}
+
+function parseUnicodeNum(str) {
+  if (!str) return null;
+  // Map unicode fractions to values
+  const map = {
+    '⅛': 1/8, '¼': 1/4, '⅓': 1/3, '⅜': 3/8, '½': 1/2,
+    '⅝': 5/8, '⅔': 2/3, '¾': 3/4, '⅞': 7/8,
+  };
+  let s = str;
+  // Replace unicode fractions with decimal
+  for (const [sym, val] of Object.entries(map)) {
+    s = s.replace(sym, val);
+  }
+  // Handle e.g. "1.5" or "2" or "1 1/2" or "3/4"
+  s = s.trim();
+  // Fraction pattern like "3/4" or "1 3/4"
+  const fracMatch = s.match(/^(\d+)?\s*(\d+)\/(\d+)$/);
+  if (fracMatch) {
+    const whole = fracMatch[1] ? parseInt(fracMatch[1]) : 0;
+    const num   = parseInt(fracMatch[2]);
+    const den   = parseInt(fracMatch[3]);
+    if (den === 0) return null;
+    return whole + num / den;
+  }
+  const n = parseFloat(s);
+  return isNaN(n) ? null : n;
+}
+
+// Servings controls
+btnMinus.addEventListener('click', () => {
+  if (currentServings > 1) {
+    currentServings--;
+    updateServings();
+  }
+});
+
+btnPlus.addEventListener('click', () => {
+  currentServings++;
+  updateServings();
+});
+
+function updateServings() {
+  servCount.textContent = currentServings;
+  btnMinus.disabled = currentServings <= 1;
+
+  const custom = loadCustom(currentRecipe.id);
+  const inputs = ingList.querySelectorAll('.ingredient-qty[data-base]');
+
+  inputs.forEach(input => {
+    const idx     = input.dataset.index;
+    const base    = parseFloat(input.dataset.base);
+    const scaled  = base * currentServings;
+
+    if (custom[idx] !== undefined) {
+      // keep custom unchanged on servings change?
+      // Design decision: custom overrides are per-serving — scale custom too
+      // Actually better UX: custom values ARE the actual values (not per-serving)
+      // So when servings changes, we re-derive from the custom (per-serving) value
+      // We store custom as "actual qty for current servings", so re-scale is tricky.
+      // Simpler, consistent: store custom as a per-serving override (base replacement),
+      // and scale it. But we can't know old servings.
+      // Best UX: on servings change, clear custom if any and show scaled.
+      // We'll just show scaled and keep custom in storage but not re-apply.
+      // Simplest correct behavior: custom values are absolute; servings changes re-scale from base only.
+      // Remove this index from custom on servings change.
+      delete custom[idx];
+    }
+
+    input.value = fmtQty(scaled);
+    input.classList.remove('customized');
+  });
+
+  // Clean up custom
+  const anyLeft = Object.keys(custom).length > 0;
+  if (!anyLeft) {
+    clearCustom(currentRecipe.id);
+    customInd.classList.remove('visible');
+  } else {
+    saveCustom(currentRecipe.id, custom);
+  }
+}
+
+// Reset
+resetBtn.addEventListener('click', () => {
+  clearCustom(currentRecipe.id);
+  renderModal();
+});
+
+// Close
+closeBtn.addEventListener('click', closeModal);
+
+overlay.addEventListener('click', e => {
+  if (e.target === overlay) closeModal();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════════════ */
+renderCards('all');
+</script>
+</body>
+</html>
